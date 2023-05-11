@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - wget https://github.com/aquasecurity/trivy/releases/download/v0.36.1/trivy_0.36.1_Linux-64bit.deb
+      - sudo dpkg -i trivy_0.36.1_Linux-64bit.deb
+  pre_build:
+    commands:
+      - echo "Hello Abhishek all is good :)"
+
+  build:
+    commands:
+      - echo "Hi Abhishek here is all good :) !!"
+
+  post_build:
+    commands:
+      - echo 'deb http://download.opensuse.org/repositories/home:/cabelo/xUbuntu_23.04/ /' | sudo tee /etc/apt/sources.list.d/home:cabelo.list
+      - curl -fsSL https://download.opensuse.org/repositories/home:cabelo/xUbuntu_23.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_cabelo.gpg > /dev/null
+      - sudo apt update
+      - sudo apt install owasp-zap -y
+      - sudo apt-get install default-jre -y
+      - echo "This is branch $CODEBUILD_WEBHOOK_HEAD_REF"
+      - echo "Building branch $(git rev-parse --abbrev-ref HEAD) with commit ID $CODEBUILD_SOURCE_VERSION"
+      - owasp-zap -cmd -quickurl https://devapi.geminisolutions.com/leavemgmt -quickprogress -quickout /tmp/my_rep_$CODEBUILD_SOURCE_VERSION_$CODEBUILD_BUILD_NUMBER.html
+      - aws s3 cp /tmp/my_rep_$CODEBUILD_SOURCE_VERSION_$CODEBUILD_BUILD_NUMBER.html s3://owasp-zap-bucket
