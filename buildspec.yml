@@ -20,6 +20,7 @@ phases:
       - sudo apt update
       - sudo apt install owasp-zap -y
       - sudo apt-get install default-jre -y
+      - echo $BRANCH
       - echo "This is branch $CODEBUILD_WEBHOOK_HEAD_REF"
       - echo "Building branch $(git rev-parse --abbrev-ref HEAD) with commit ID $CODEBUILD_SOURCE_VERSION"
       - owasp-zap -cmd -quickurl https://devapi.geminisolutions.com/leavemgmt -quickprogress -quickout /tmp/my_rep_$CODEBUILD_SOURCE_VERSION_$CODEBUILD_BUILD_NUMBER.html
