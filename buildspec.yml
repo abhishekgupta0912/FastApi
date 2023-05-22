@@ -30,4 +30,4 @@ phases:
       - chmod +x ./zap.sh
       - ./zap.sh 'https://eapi.geminisolutions.com/atsApplicantSvc'
       - ls /zap/wrk
-      - aws s3 cp /zap/wrk/${REPO_NAME}_${BRANCH}_${CODEBUILD_BUILD_NUMBER}_zap.html.html s3://owasp-zap-bucket
+      - aws s3 cp /zap/wrk/${REPO_NAME}_${BRANCH}_${CODEBUILD_BUILD_NUMBER}_zap.html.html s3://owasp-zap-bucket/zap
